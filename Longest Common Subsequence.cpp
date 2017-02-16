@@ -27,6 +27,5 @@ int main()
 			}
 		}
 	}
-	
 	cout<<dp[s1.length()-1][s2.length()-1]<<endl;
 }

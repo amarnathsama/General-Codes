@@ -6,7 +6,7 @@
 using namespace std;
 
 map<int, int>vis;
-map<int, vector<int> >adj;
+vector<int>adj[100];
 
 void bfs(int s)
 {

@@ -29,8 +29,9 @@ void bfs(int s)
 			}
 		}
 		
-		s = q.front();
 		q.pop();
+		s = q.front();
+		
 	}
 }
 

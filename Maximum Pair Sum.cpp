@@ -57,8 +57,7 @@ node query(int lo, int hi, node *segtree, int pos, int qlo, int qhi)
 	return ans;
 }
 
-/*
-void update(int *a, int lo, int hi, node *segtree, int pos, int ind, int val)
+/*void update(int *a, int lo, int hi, node *segtree, int pos, int ind, int val)
 {
 	if(lo == hi)
 	{

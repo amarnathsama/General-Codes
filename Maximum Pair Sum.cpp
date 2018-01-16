@@ -6,7 +6,7 @@ int *ar;
 
 struct node
 {
-  long a, b;
+  int a, b;
 };
 
 void build(int *a, int lo, int hi, node *segtree, int pos)
@@ -50,14 +50,14 @@ node query(int lo, int hi, node *segtree, int pos, int qlo, int qhi)
 	node l = query(lo, mid, segtree, 2 * pos + 1, qlo, qhi);
 	node r = query(mid + 1, hi, segtree, 2 * pos + 2, qlo, qhi);
 	
-	node ans;	
+	node ans;
 	ans.a = max(l.a, r.a);
 	ans.b = min(max(l.a, r.b), max(l.b, r.a));
 	
 	return ans;
 }
 
-/*void update(int *a, int lo, int hi, node *segtree, int pos, int ind, int val)
+void update(int *a, int lo, int hi, node *segtree, int pos, int ind, int val)
 {
 	if(lo == hi)
 	{
@@ -79,40 +79,16 @@ node query(int lo, int hi, node *segtree, int pos, int qlo, int qhi)
 		update(a, mid + 1, hi, segtree, 2 * pos + 2, ind, val);
 	}
 	
-	int p, q, x, y;
-	  
-	  p = segtree[2 * pos + 1].a, q = segtree[2 * pos + 1].b;
-	  x = segtree[2 * pos + 2].a, y = segtree[2 * pos + 2].b;
-	  
-	  vector <int> v;
-	  
-	  if(p != -1)
-	  v.push_back(p);
-	  
-	  if(q != -1)
-	  v.push_back(q);
-	  
-	  if(x != -1)
-	  v.push_back(x);
-	  
-	  if(y != -1)
-	  v.push_back(y);
-	  
-	  sort_(v);
-	  
-	  if(v.size() >= 2)
-	  {
-	  	segtree[pos].a = v[0];
-	  	segtree[pos].b = v[1];
-	  }
-	  
-	  else
-	  {
-	  	segtree[pos].a = v[0];
-	  	segtree[pos].b = -1;
-	  }
+	node l = segtree[2 * pos + 1];
+	node r = segtree[2 * pos + 2];
+	
+	node ans;
+	ans.a = max(l.a, r.a);
+	ans.b = min(max(l.a, r.b), max(l.b, r.a));
+	
+	segtree[pos] = ans;
 }
-*/
+
 
 int main() 
 {
@@ -145,12 +121,12 @@ int main()
   	if(ch == 'Q')
   	{
   		node ans = query(0, n - 1, segtree, 0, qlo - 1, qhi - 1);
-  		cout << ar[ans.a] + ar[ans.b] << endl;
+  		cout << ans.a + ans.b << endl;
 	}
 	
 	else
 	{
-		//update(ar, 0, n - 1, segtree, 0, qlo - 1, qhi);
+		update(ar, 0, n - 1, segtree, 0, qlo - 1, qhi);
 	}	
   }
 }

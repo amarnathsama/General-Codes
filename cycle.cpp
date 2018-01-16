@@ -3,6 +3,7 @@
 #include<vector>
 
 #define max 100
+#define dummy 100
 
 using namespace std;
 

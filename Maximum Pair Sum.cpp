@@ -9,32 +9,12 @@ struct node
   long a, b;
 };
 
-void sort_(vector <int> &v)
-{
-	int x = v.size();
-	vector <int> v1;
-	
-	for(int i = 0 ; i < x ; i++)
-	{
-		for(int j = i + 1 ; j < x ; j++)
-		{
-			if(ar[v[j]] > ar[v[i]])
-			{
-				int temp = v[i];
-				v[i] = v[j];
-				v[j] = temp;
-			}
-		}
-	}
-	
-}
-
 void build(int *a, int lo, int hi, node *segtree, int pos)
 {
   if(lo == hi)
   {
-    segtree[pos].a = lo;
-    segtree[pos].b = -1;
+    segtree[pos].a = a[lo];
+    segtree[pos].b = INT_MIN;
     
     return;
   }
@@ -44,112 +24,47 @@ void build(int *a, int lo, int hi, node *segtree, int pos)
   build(a, lo, mid, segtree, 2 * pos + 1);
   build(a, mid + 1, hi, segtree, 2 * pos + 2);
   
-  int p, q, x, y, max1, max2;
+  node l = segtree[2 * pos + 1], r = segtree[2 * pos + 2];
   
-  p = segtree[2 * pos + 1].a, q = segtree[2 * pos + 1].b;
-  x = segtree[2 * pos + 2].a, y = segtree[2 * pos + 2].b;
-  
-  vector <int> v;
-  
-  if(p != -1)
-  v.push_back(p);
-  
-  if(q != -1)
-  v.push_back(q);
-  
-  if(x != -1)
-  v.push_back(x);
-  
-  if(y != -1)
-  v.push_back(y);
-  
-  sort_(v);
-  
-  if(v.size() >= 2)
-  {
-  	segtree[pos].a = v[0];
-  	segtree[pos].b = v[1];
-  }
-  
-  else
-  {
-  	segtree[pos].a = v[0];
-  	segtree[pos].b = -1;
-  }
+  segtree[pos].a = max(l.a, r.a);
+  segtree[pos].b = min(max(l.a, r.b), max(l.b, r.a));
 }
 
 node query(int lo, int hi, node *segtree, int pos, int qlo, int qhi)
 {
 	if(qlo <= lo && qhi >= hi)
-	{
-		node ret;
-		
-		ret.a = segtree[pos].a;
-		ret.b = segtree[pos].b;
-		
-		return ret;
+	{		
+		return segtree[pos];
 	}
 	
 	if(qlo > hi || qhi < lo)
 	{
 		node ret;
-		
-		ret.a = -1;
-		ret.b = -1;
+		ret.a = INT_MIN, ret.b = INT_MIN;
 		
 		return ret;
 	}
 	
 	int mid = (lo + hi)/2;
 	
-	node r1 = query(lo, mid, segtree, 2 * pos + 1, qlo, qhi);
-	node r2 = query(mid + 1, hi, segtree, 2 * pos + 2, qlo, qhi);
+	node l = query(lo, mid, segtree, 2 * pos + 1, qlo, qhi);
+	node r = query(mid + 1, hi, segtree, 2 * pos + 2, qlo, qhi);
 	
-	node ret;
+	node ans;	
+	ans.a = max(l.a, r.a);
+	ans.b = min(max(l.a, r.b), max(l.b, r.a));
 	
-	int p, q, x, y, max1, max2;
-	  
-	  p = r1.a, q = r1.b;
-	  x = r2.a, y = r2.b;
-	  
-	  vector <int> v;
-	  
-	  if(p != -1)
-	  v.push_back(p);
-	  
-	  if(q != -1)
-	  v.push_back(q);
-	  
-	  if(x != -1)
-	  v.push_back(x);
-	  
-	  if(y != -1)
-	  v.push_back(y);
-	  
-	  sort_(v);
-	  
-	  if(v.size() >= 2)
-	  {
-	  	ret.a = v[0];
-	  	ret.b = v[1];
-	  }
-	  
-	  else
-	  {
-	  	ret.a = v[0];
-	  	ret.b = -1;
-	  }
-	
-	return ret;
+	return ans;
 }
 
+/*
 void update(int *a, int lo, int hi, node *segtree, int pos, int ind, int val)
 {
 	if(lo == hi)
 	{
 		segtree[pos].a = val;
 		a[ind] = val;
-			
+		
 		return;
 	}
 	
@@ -198,6 +113,7 @@ void update(int *a, int lo, int hi, node *segtree, int pos, int ind, int val)
 	  	segtree[pos].b = -1;
 	  }
 }
+*/
 
 int main() 
 {
@@ -235,9 +151,7 @@ int main()
 	
 	else
 	{
-		update(ar, 0, n - 1, segtree, 0, qlo - 1, qhi);
-	}
-	
+		//update(ar, 0, n - 1, segtree, 0, qlo - 1, qhi);
+	}	
   }
-  
 }

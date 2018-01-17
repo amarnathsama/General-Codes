@@ -6,7 +6,8 @@ int *ar;
 
 struct node
 {
-  int a, b;
+  int a;
+  int b;
 };
 
 void sort_(vector <int> &v)

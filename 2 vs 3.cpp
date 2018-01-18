@@ -96,7 +96,7 @@ void update(string &a, long long lo, long long hi, node *segtree, long long pos,
 	
 	long long mid = (lo + hi)/2;
 	
-	if(mid <= ind)
+	if(ind <= mid)
 	{
 		update(a, lo, mid, segtree, 2 * pos + 1, ind);
 	}

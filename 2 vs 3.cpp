@@ -2,9 +2,15 @@
 
 using namespace std;
 
-int pow(int x, int y)
+struct node
 {
-  int res = 1;
+	long long val, len;
+};
+
+
+long long pow(long long x, long long y)
+{
+  long long res = 1;
   
   while(y)
   {
@@ -18,40 +24,42 @@ int pow(int x, int y)
   return res;
 }
 
-int combine(int a, int b, int la, int lb)
+node combine(node a, node b)
 {
-	int ans;
+	node ans;
 	
-	if(la == 0 || a == -1)
-	return b % 3;
+	if(a.len == 0)
+	return b;
 	
-	if(lb == 0 || b == -1)
-	return a % 3;
+	if(b.len == 0)
+	return a;
 	
-	ans = ((a * pow(2, lb)) % 3 + b % 3) % 3;
+	ans.len = a.len + b.len;
+	ans.val = ((pow(2, b.len) * a.val) % 3 + b.val % 3) % 3;
 	
 	return ans;
 }
 
 
-void build(string &s, int lo, int hi, int *segtree, int pos)
+void build(string &s, long long lo, long long hi, node *segtree, long long pos)
 {
 	if(lo == hi)
 	{
-		segtree[pos] = (s[lo] == '1' ? 1 : 0);
+		segtree[pos].val = (s[lo] == '1' ? 1 : 0);
+		segtree[pos].len = 1;
 		
 		return;
 	}
 	
-	int mid = (lo + hi)/2;
+	long long mid = (lo + hi)/2;
 	
 	build(s, lo, mid, segtree, 2 * pos + 1);
 	build(s, mid + 1, hi, segtree, 2 * pos + 2);
 	
-	segtree[pos] = combine(segtree[2 * pos + 1], segtree[2 * pos + 2], mid - lo + 1, hi - mid);
+	segtree[pos] = combine(segtree[2 * pos + 1], segtree[2 * pos + 2]);
 }
 
-int query(int lo, int hi, int *segtree, int pos, int qlo, int qhi)
+node query(long long lo, long long hi, node *segtree, long long pos, long long qlo, long long qhi)
 {
 	if(qlo <= lo && qhi >= hi)
 	{
@@ -59,29 +67,34 @@ int query(int lo, int hi, int *segtree, int pos, int qlo, int qhi)
 	}
 	
 	if(qlo > hi || qhi < lo)
-	{		
-		return -1;
+	{
+		node ans;
+		
+		ans.val = 0;
+		ans.len = 0;
+		
+		return ans;
 	}
 	
-	int mid = (lo + hi)/2;
+	long long mid = (lo + hi)/2;
 	
-	int l = query(lo, mid, segtree, 2 * pos + 1, qlo, qhi);
-	int r = query(mid + 1, hi, segtree, 2 * pos + 2, qlo, qhi);
+	node l = query(lo, mid, segtree, 2 * pos + 1, qlo, qhi);
+	node r = query(mid + 1, hi, segtree, 2 * pos + 2, qlo, qhi);
 	
-	return combine(l, r, mid - lo + 1, hi - mid);
+	return combine(l, r);
 }
 
-void update(string a, int lo, int hi, int *segtree, int pos, int ind)
+void update(string &a, long long lo, long long hi, node *segtree, long long pos, long long ind)
 {
 	if(lo == hi)
 	{
 		a[lo] = '1';
-		segtree[pos] = 1;
+		segtree[pos].val = 1;
 		
 		return;
 	}
 	
-	int mid = (lo + hi)/2;
+	long long mid = (lo + hi)/2;
 	
 	if(mid <= ind)
 	{
@@ -93,34 +106,34 @@ void update(string a, int lo, int hi, int *segtree, int pos, int ind)
 		update(a, mid + 1, hi, segtree, 2 * pos + 2, ind);
 	}
 	
-	segtree[pos] = combine(segtree[2 * pos + 1], segtree[2 * pos + 2], mid - lo + 1, hi - mid);
+	segtree[pos] = combine(segtree[2 * pos + 1], segtree[2 * pos + 2]);
 }
 
 int main()
 {
 	freopen("in.in", "r", stdin);
 	
-	int n;
+	long long n;
 	cin >> n;
 	
 	string s;
 	cin >> s;
 	
-	int *segtree = new int [3 * n];
+	node *segtree = new node [3 * n];
 	build(s, 0, n - 1, segtree, 0);
 	
-	int q;
+	long long q;
 	cin >> q;
 	
 	while(q--)
 	{
-		int x, qlo, qhi;
+		long long x, qlo, qhi;
 		cin >> x;
 		
 		if(!x)
 		{
 			cin >> qlo >> qhi;
-			cout << query(0, n - 1, segtree, 0, qlo, qhi) % 3 << endl;
+			cout << query(0, n - 1, segtree, 0, qlo, qhi).val % 3 << endl;
 		}
 		
 		else

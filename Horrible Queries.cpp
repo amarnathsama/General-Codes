@@ -102,8 +102,10 @@ long long query(long long lo, long long hi, node *segtree, long long pos, long l
 
 int main() 
 {
-  //freopen("in.in", "r", stdin);
+  freopen("in.in", "r", stdin);
  
+  node *segtree;
+  
   long long t;
   cin >> t;
   
@@ -112,7 +114,7 @@ int main()
     long long n, c;
     cin >> n >> c;
       
-    node *segtree = new node [4000000];
+	segtree = new node [4 * n];
     
     build(0, n - 1, segtree, 0);
     
@@ -137,5 +139,7 @@ int main()
         cout << query(0, n - 1, segtree, 0, p - 1, q - 1) << endl;
       }
     }
+    
+    delete [] segtree;
   }
 }

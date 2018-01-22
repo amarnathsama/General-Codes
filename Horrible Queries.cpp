@@ -102,7 +102,7 @@ long long query(long long lo, long long hi, node *segtree, long long pos, long l
 
 int main() 
 {
-  freopen("in.in", "r", stdin);
+  //freopen("in.in", "r", stdin);
  
   node *segtree;
   

@@ -36,11 +36,12 @@ int main()
 {
 	freopen("in.in", "r", stdin);
 	
-	//cout << "Input Productions" << endl;
+	cout << "Input Productions" << endl;
 	string s;
 	
 	while(getline(cin, s), s != "0")
 	{
+		cout << s << endl;
 		string st = "";
 		
 		for(int i = 2 ; i < s.length() ; i++)
@@ -52,12 +53,15 @@ int main()
 		v.push_back(st);
 	}
 	
-	//cout << "Null Productions" << endl;
+	cout << endl << "Null Productions" << endl;
 	
 	while(getline(cin, s), s != "0")
 	{
+		cout << s << endl;
 		e[s[0]] = 1;
 	}
+	
+	cout << endl << "Productions" << endl;
 	
 	for(int i = 0 ; i < v.size() ; i++)
 	{

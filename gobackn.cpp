@@ -1,5 +1,4 @@
 #include <iostream>
-#include <vector>
 
 using namespace std;
 
@@ -24,6 +23,7 @@ void solve(int i, int q)
 
     if(q == k)
     {
+      cout << ": lost ";
       cur_win = 1;
       lost = j;
     }
@@ -62,6 +62,6 @@ int main()
   solve(1, 0);
   cout << endl;
 
-  cout << "Transmissions Required " << t << endl;
+  cout << endl << "Transmissions Required " << t << endl;
 
 }

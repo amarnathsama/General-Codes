@@ -3,7 +3,7 @@
 
 using namespace std;
 
-int n, w, k, t = 1;
+int n, w, k, t = 0;
 
 void solve(int i, int q)
 {
@@ -17,9 +17,7 @@ void solve(int i, int q)
     t++;
     cur_win++;
 
-    if(j > n)
-    return;
-
+    if(j <= n)
     cout << j << " ";
 
     q++;

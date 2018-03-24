@@ -3,18 +3,19 @@
 
 using namespace std;
 
-int n, w, k;
+int n, w, k, t = 1;
 
 void solve(int i, int q)
 {
   if(i == n)
   return;
 
-  int lost = -1, cur_win = 0;
+  int lost = -1, cur_win = q;
 
   for(int j = i ; j <= i + w - 1 ; j++)
   {
-    cur_win ++;
+    t++;
+    cur_win++;
 
     if(j > n)
     return;
@@ -25,7 +26,7 @@ void solve(int i, int q)
 
     if(q == k)
     {
-
+      cur_win = 1;
       lost = j;
     }
   }
@@ -37,7 +38,9 @@ void solve(int i, int q)
 
   else
   {
-    solve(lost, cur_win - 1);
+    t++;
+    cout << lost << " ";
+    solve(lost + 1, cur_win);
   }
 
 }
@@ -60,5 +63,7 @@ int main()
 
   solve(1, 0);
   cout << endl;
+
+  cout << "Transmissions Required " << t << endl;
 
 }

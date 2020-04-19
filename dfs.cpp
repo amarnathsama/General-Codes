@@ -3,9 +3,9 @@
 #include<vector>
 
 using namespace std;
-
-map<int, int>vis;
-vector<int>adj[100];
+const int MX=100001;//check limits
+vector<int> vis(MX);
+vector<int>adj[MX];
 
 void dfs(int s)
 {
